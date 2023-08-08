@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import InputComponent from './Components/InputComponent';
+import ResultComponent from './Components/ResultComponent';
+import { orderSteelBeams } from './Hooks/CutlistOptimizer'; 
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [results, setResults] = useState(null);
+
+    const calculateOrder = (desiredLengths, availableLengths, kerf) => {
+        const orderResults = orderSteelBeams(desiredLengths, availableLengths, kerf);
+        setResults(orderResults);
+    }
+
+    return (
+        <div className="App">
+            <h1>Steel Order Calculator</h1>
+            <InputComponent onCalculate={calculateOrder} />
+            {results && <ResultComponent data={results} />}
+        </div>
+    );
 }
 
 export default App;
